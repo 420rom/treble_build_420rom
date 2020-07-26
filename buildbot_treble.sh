@@ -1,6 +1,6 @@
 #!/bin/bash
 echo ""
-echo "LineageOS 17.x Treble Buildbot"
+echo "420rom Treble Buildbot"
 echo "ATTENTION: this script syncs repo on each run"
 echo "Executing in 5 seconds - CTRL-C to exit"
 echo ""
@@ -8,7 +8,7 @@ sleep 5
 
 START=`date +%s`
 BUILD_DATE="$(date +%Y%m%d)"
-BL=$PWD/treble_build_los
+BL=$PWD/treble_build_420rom
 
 echo "Preparing local manifest"
 mkdir -p .repo/local_manifests
@@ -30,7 +30,7 @@ cd ../..
 cd frameworks/native
 git am $BL/patches/0001-Revert-surfaceflinger-Add-support-for-extension-lib.patch
 cd ../..
-cd vendor/lineage
+cd vendor/420rom
 git revert 612c5a846ea5aed339fe1275c119ee111faae78c --no-edit # soong: Add flag for fod extension
 cd ../..
 echo ""
@@ -39,7 +39,7 @@ echo "Applying PHH patches"
 rm -f device/*/sepolicy/common/private/genfs_contexts
 cd device/phh/treble
 git clean -fdx
-bash generate.sh lineage
+bash generate.sh 420rom
 cd ../../..
 bash ~/treble_experimentations/apply-patches.sh treble_patches
 echo ""
@@ -56,7 +56,7 @@ cd ..
 cd packages/apps/LineageParts
 git am $BL/patches/0001-LineageParts-Invert-per-app-stretch-to-fullscreen.patch
 cd ../../..
-cd vendor/lineage
+cd vendor/420rom
 git am $BL/patches/0001-vendor_lineage-Log-privapp-permissions-whitelist-vio.patch
 cd ../..
 echo ""
@@ -78,7 +78,7 @@ cd ../..
 cd frameworks/native
 git revert 581c22f979af05e48ad4843cdfa9605186d286da --no-edit # Add suspend_resume trace events to the atrace 'freq' category.
 cd ../..
-cd hardware/lineage/interfaces
+cd hardware/420rom/interfaces
 git am $BL/patches/0001-cryptfshw-Remove-dependency-on-generated-kernel-head.patch
 cd ../../..
 cd system/hardware/interfaces
@@ -87,7 +87,7 @@ cd ../../..
 cd system/sepolicy
 git revert d12551bf1a6e8a9ece6bbb98344a27bde7f9b3e1 --no-edit # sepolicy: Relabel wifi. properties as wifi_prop
 cd ../..
-cd vendor/lineage
+cd vendor/420rom
 git am $BL/patches/0001-build_soong-Disable-generated_kernel_headers.patch
 cd ../..
 echo ""
@@ -105,16 +105,18 @@ buildVariant() {
 	make installclean
 	make -j$(nproc --all) systemimage
 	make vndk-test-sepolicy
-	mv $OUT/system.img ~/build-output/lineage-17.1-$BUILD_DATE-UNOFFICIAL-${1}.img
+	mv $OUT/system.img ~/build-output/420rom-10-$BUILD_DATE-OFFICIAL-${1}.img
 }
 
-buildVariant treble_arm_avS
-buildVariant treble_arm_bvS
-buildVariant treble_a64_avS
-buildVariant treble_a64_bvS
-buildVariant treble_arm64_avS
-buildVariant treble_arm64_bvS
-ls ~/build-output | grep 'lineage'
+buildVariant treble_arm_avN
+buildVariant treble_arm_bvN
+buildVariant treble_a64_avN
+buildVariant treble_a64_bvN
+buildVariant treble_arm64_avN
+buildVariant treble_arm64_agN
+buildVariant treble_arm64_bvN
+buildVariant treble_arm64_bgN
+ls ~/build-output | grep '420rom'
 
 END=`date +%s`
 ELAPSEDM=$(($(($END-$START))/60))
