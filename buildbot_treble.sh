@@ -33,13 +33,13 @@ source build/envsetup.sh &> /dev/null
 echo ""
 
 echo "Reverting LOS FOD implementation"
-cd ~/build/420rom/frameworks/base
+cd frameworks/base
 git am $BL/patches/0001-Squashed-revert-of-LOS-FOD-implementation.patch
 cd ../..
-cd ~/build/420rom/frameworks/native
+cd frameworks/native
 git am $BL/patches/0001-Revert-surfaceflinger-Add-support-for-extension-lib.patch
 cd ../..
-cd ~/build/420rom/vendor/420rom
+cd vendor/420rom
 git revert 612c5a846ea5aed339fe1275c119ee111faae78c --no-edit # soong: Add flag for fod extension
 cd ../..
 echo ""
@@ -54,49 +54,49 @@ bash ~/build/treble_experimentations/apply-patches.sh treble_patches
 echo ""
 
 echo "Applying universal patches"
-cd ~/build/420rom/frameworks/base
+cd frameworks/base
 git am $BL/patches/0001-UI-Revive-navbar-layout-tuning-via-sysui_nav_bar-tun.patch
 git am $BL/patches/0001-Disable-vendor-mismatch-warning.patch
 git am $BL/patches/0001-core-Add-support-for-MicroG.patch
 cd ../..
-cd ~/build/420rom/lineage-sdk
+cd lineage-sdk
 git am $BL/patches/0001-sdk-Invert-per-app-stretch-to-fullscreen.patch
 cd ..
-cd ~/build/420rom/packages/apps/LineageParts
+cd packages/apps/LineageParts
 git am $BL/patches/0001-LineageParts-Invert-per-app-stretch-to-fullscreen.patch
 cd ../../..
-cd ~/build/420rom/vendor/420rom
+cd vendor/420rom
 git am $BL/patches/0001-vendor_420rom-Log-privapp-permissions-whitelist-vio.patch
 cd ../..
 echo ""
 
 echo "Applying GSI-specific patches"
-cd ~/build/420rom/build/make
+cd build/make
 git am $BL/patches/0001-build-Don-t-handle-apns-conf.patch
 cd ../..
-cd ~/build/420rom/device/phh/treble
+cd device/phh/treble
 git revert 82b15278bad816632dcaeaed623b569978e9840d --no-edit # Update lineage.mk for LineageOS 16.0
 git am $BL/patches/0001-Remove-fsck-SELinux-labels.patch
 git am $BL/patches/0001-treble-Add-overlay-lineage.patch
 git am $BL/patches/0001-treble-Don-t-specify-config_wallpaperCropperPackage.patch
 git am $BL/patches/0001-TEMP-treble-Fix-init.treble-environ.rc-hardcode-for-.patch
 cd ../../..
-cd ~/build/420rom/external/tinycompress
+cd external/tinycompress
 git revert 82c8fbf6d3fb0a017026b675adf2cee3f994e08a --no-edit # tinycompress: Use generated kernel headers
 cd ../..
-cd ~/build/420rom/frameworks/native
+cd frameworks/native
 git revert 581c22f979af05e48ad4843cdfa9605186d286da --no-edit # Add suspend_resume trace events to the atrace 'freq' category.
 cd ../..
-cd ~/build/420rom/hardware/420rom/interfaces
+cd hardware/420rom/interfaces
 git am $BL/patches/0001-cryptfshw-Remove-dependency-on-generated-kernel-head.patch
 cd ../../..
-cd ~/build/420rom/system/hardware/interfaces
+cd system/hardware/interfaces
 git revert 5c145c49cc83bfe37c740bcfd3f82715ee051122 --no-edit # system_suspend: start early
 cd ../../..
-cd ~/build/420rom/system/sepolicy
+cd system/sepolicy
 git revert d12551bf1a6e8a9ece6bbb98344a27bde7f9b3e1 --no-edit # sepolicy: Relabel wifi. properties as wifi_prop
 cd ../..
-cd ~/build/420rom/vendor/420rom
+cd vendor/420rom
 git am $BL/patches/0001-build_soong-Disable-generated_kernel_headers.patch
 cd ../..
 echo ""
