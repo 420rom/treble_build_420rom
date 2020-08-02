@@ -112,7 +112,7 @@ mkdir -p ~/build-output/
 buildVariant() {
 	lunch ${1}-userdebug
 	make installclean
-	make -j$(nproc --all) systemimage
+	make -j2 systemimage
 	make vndk-test-sepolicy
 	mv $OUT/system.img ~/build-output/420rom-10-$BUILD_DATE-OFFICIAL-${1}.img
 }
