@@ -23,6 +23,9 @@ Clone the modified treble patches and this repo:
 Finally, start the build script:
 
     bash treble_build_420rom/buildbot_treble.sh       or
-    bash treble_experimentations/build-dakkar.sh 420rom arm64-aonly-gapps-nosu-user
+	
+	bash ../treble_experimentations/build-rom.sh      or
+	
+    bash ../treble_experimentations/build-dakkar.sh 420rom arm64-aonly-gapps-nosu-user
 
 Be sure to update the cloned repos from time to time!
