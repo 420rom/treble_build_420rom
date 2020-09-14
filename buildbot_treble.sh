@@ -95,6 +95,7 @@ git revert 5c145c49cc83bfe37c740bcfd3f82715ee051122 --no-edit # system_suspend: 
 cd ../../..
 cd system/sepolicy
 git revert d12551bf1a6e8a9ece6bbb98344a27bde7f9b3e1 --no-edit # sepolicy: Relabel wifi. properties as wifi_prop
+git am $BL/patches/0001-Revert-sepolicy-Address-denials-for-legacy-last_kmsg.patch
 cd ../..
 cd vendor/420rom
 git am $BL/patches/0001-build_soong-Disable-generated_kernel_headers.patch
@@ -106,7 +107,7 @@ sleep 5
 echo ""
 
 export WITHOUT_CHECK_API=true
-export WITH_SU=false
+export WITH_SU=true
 mkdir -p ~/build-output/
 
 buildVariant() {
@@ -117,11 +118,20 @@ buildVariant() {
 	mv $OUT/system.img ~/build-output/420rom-10-$BUILD_DATE-OFFICIAL-${1}.img
 }
 
+buildVariant treble_arm_avS
+buildVariant treble_arm_bvS
+buildVariant treble_a64_avS
+buildVariant treble_a64_bvS
+buildVariant treble_arm64_avS
+buildVariant treble_arm64_bvS
 buildVariant treble_arm64_agN
+buildVariant treble_arm64_bgN
 ls ~/build-output | grep '420rom'
 
 echo "       420rom Pixel Edition Rom v5.0 Build Completed         "
+
 END=`date +%s`
 ELAPSEDM=$(($(($END-$START))/60))
 ELAPSEDS=$(($(($END-$START))-$ELAPSEDM*60))
 echo "Buildbot completed in $ELAPSEDM minutes and $ELAPSEDS seconds"
+echo ""
