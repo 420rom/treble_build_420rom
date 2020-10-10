@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "                                                   "
-echo "      420rom Pixel Edition Rom v5.0 Builder        "
+echo "      420rom Pixel Edition Rom v6.0 Builder        "
 echo "                                                   "
 echo "       Perfect base for the 420rom module          "
 echo "                                                   "
@@ -128,7 +128,7 @@ buildVariant treble_arm64_agN
 buildVariant treble_arm64_bgN
 ls ~/build-output | grep '420rom'
 
-echo "       420rom Pixel Edition Rom v5.0 Build Completed         "
+echo "       420rom Pixel Edition Rom v6.0 Build Completed         "
 
 END=`date +%s`
 ELAPSEDM=$(($(($END-$START))/60))
