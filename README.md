@@ -13,12 +13,12 @@ Create a new working directory for your 420rom build and navigate to it:
 
 Initialize your 420rom workspace:
 
-    repo init -u ssh://git@github.com/420rom/android.git -b 420rom-10
+    repo init -u ssh://git@github.com/420rom/android.git -b 420rom-11
 
 Clone the modified treble patches and this repo:
 
-    git clone ssh://git@github.com/420rom/treble_patches -b 420rom-10
-    git clone ssh://git@github.com/420rom/treble_build_420rom -b 420rom-10
+    git clone ssh://git@github.com/420rom/treble_patches -b 420rom-11
+    git clone ssh://git@github.com/420rom/treble_build_420rom -b 420rom-11
 
 Finally, start the build script:
 
