@@ -1,18 +1,18 @@
 #!/bin/bash
 echo "                                                   "
-echo "      420rom Pixel Edition Rom v6.0 Builder        "
+echo "       420rom Pixel Edition Rom v6.0 Builder       "
+echo "   Android Base 11.0.0 r8 - LineageOS Base 18.0    "
 echo "                                                   "
-echo "       Perfect base for the 420rom module          "
+echo "              By ExocetDJ & Abun880007             "
 echo "                                                   "
-echo "            By ExocetDJ & Abun880007               "
+echo "          Get the Download links from our          "
+echo "        Telegram Group t.me/Home_of_420roms        "
 echo "                                                   "
-echo "         Get the Download links from our           "
-echo "       Telegram Group t.me/Home_of_420roms         "
-echo ""
-echo "420rom Treble Buildbot"
-echo "ATTENTION: this script syncs repo on each run"
-echo "Executing in 5 seconds - CTRL-C to exit"
-echo ""
+echo "              420rom Treble Buildbot               "
+echo "                                                   "
+echo "   ATTENTION: this script syncs repo on each run   "
+echo "      Executing in 5 seconds - CTRL-C to exit      "
+echo "                                                   "
 sleep 5
 
 START=`date +%s`
@@ -121,8 +121,9 @@ buildVariant() {
 buildVariant treble_arm64_bgN
 ls ~/build-output | grep '420rom'
 
-echo "       420rom Pixel Edition Rom v6.0 Build Completed         "
-
+echo "                                                   "
+echo "   420rom Pixel Edition Rom v6.0 Build Completed   "
+echo "                                                   "
 END=`date +%s`
 ELAPSEDM=$(($(($END-$START))/60))
 ELAPSEDS=$(($(($END-$START))-$ELAPSEDM*60))
