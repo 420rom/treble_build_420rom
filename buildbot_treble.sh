@@ -54,8 +54,12 @@ buildVariant treble_a64_bvN
 buildVariant treble_a64_bvS
 buildVariant treble_arm64_avN
 buildVariant treble_arm64_avS
+buildVariant treble_arm64_agS
+buildVariant treble_arm64_agN
 buildVariant treble_arm64_bvN
 buildVariant treble_arm64_bvS
+buildVariant treble_arm64_bgS
+buildVariant treble_arm64_bgN
 ls ~/build-output | grep '420rom'
 
 echo "                                                   "
