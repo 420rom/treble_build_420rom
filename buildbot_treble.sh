@@ -37,17 +37,13 @@ export WITH_SU=true
 mkdir -p ~/build-output/
 
 buildVariant() {
-	lunch ${1}-userdebug
+	lunch treble_arm64_bvN-userdebug
 	make installclean
 	make -j$(nproc --all) systemimage
 	make vndk-test-sepolicy
-	mv $OUT/system.img ~/build-output/420rom-11-$BUILD_DATE-OFFICIAL-${1}.img
+	mv $OUT/system.img ~/build-output/420rom-11-$BUILD_DATE-OFFICIAL-treble_arm64_bvN.img
 }
 
-buildVariant treble_arm64_bgN
-buildVariant treble_arm64_bvN
-buildVariant treble_arm64_bgS
-buildVariant treble_arm64_bvS
 ls ~/build-output | grep '420rom'
 
 echo "                                                   "
