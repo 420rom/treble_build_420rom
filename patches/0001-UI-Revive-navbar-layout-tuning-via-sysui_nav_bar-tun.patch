@@ -1,21 +1,29 @@
-From 6642bca8a784f2a65cde080935878c830e383ffd Mon Sep 17 00:00:00 2001
+From dc5694dd4956db2dbfbbea6bb2d34acb6f2a7851 Mon Sep 17 00:00:00 2001
 From: Andy CrossGate Yan <GeForce8800Ultra@gmail.com>
-Date: Sun, 3 Nov 2019 03:32:02 +0000
+Date: Tue, 6 Oct 2020 01:41:16 +0000
 Subject: [PATCH] UI: Revive navbar layout tuning via sysui_nav_bar tunable
 
 Google keeps fixing what ain't broken.
-This partially undoes https://github.com/LineageOS/android_frameworks_base/commit/e0d5ccd331e694afdc3c8462a1b845df329de2b8
+This partially undoes https://github.com/LineageOS/android_frameworks_base/commit/e0d5ccd331e694afdc3c8462a1b845df329de2b8 and https://github.com/LineageOS/android_frameworks_base/commit/d34b4e8d278386b85a00018c502bd21d00f8813b
 
-Change-Id: I7a0fcfc9c27a08100712200d50f295f4bd81494d
+Change-Id: Ied7d7859e50fd0fcc346219964e747c5d5f4c352
 ---
- .../systemui/statusbar/phone/NavigationBarInflaterView.java  | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../statusbar/phone/NavigationBarInflaterView.java | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarInflaterView.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarInflaterView.java
-index db58e1364b3..9ebeab07f11 100644
+index 726a70582537..536263c83ddd 100644
 --- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarInflaterView.java
 +++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarInflaterView.java
-@@ -173,6 +173,7 @@ public class NavigationBarInflaterView extends FrameLayout
+@@ -108,6 +108,7 @@ public class NavigationBarInflaterView extends FrameLayout
+ 
+     private boolean mIsVertical;
+     private boolean mAlternativeOrder;
++    private boolean mUsingCustomLayout;
+ 
+     private OverviewProxyService mOverviewProxyService;
+     private int mNavBarMode = NAV_BAR_MODE_3BUTTON;
+@@ -173,6 +174,7 @@ public class NavigationBarInflaterView extends FrameLayout
          super.onAttachedToWindow();
          Dependency.get(TunerService.class).addTunable(this, NAV_BAR_INVERSE);
          Dependency.get(TunerService.class).addTunable(this, KEY_NAVIGATION_HINT);
@@ -23,17 +31,33 @@ index db58e1364b3..9ebeab07f11 100644
      }
  
      @Override
-@@ -184,7 +185,9 @@ public class NavigationBarInflaterView extends FrameLayout
- 
-     @Override
-     public void onTuningChanged(String key, String newValue) {
--        if (NAV_BAR_INVERSE.equals(key)) {
-+        if (NAV_BAR_VIEWS.equals(key)) {
+@@ -191,6 +193,8 @@ public class NavigationBarInflaterView extends FrameLayout
+             mIsHintEnabled = TunerService.parseIntegerSwitch(newValue, true);
+             updateHint();
+             onLikelyDefaultLayoutChange();
++        } else if (NAV_BAR_VIEWS.equals(key)) {
 +            setNavigationBarLayout(newValue);
-+        } else if (NAV_BAR_INVERSE.equals(key)) {
-             mInverseLayout = TunerService.parseIntegerSwitch(newValue, false);
-             updateLayoutInversion();
-         } else if (KEY_NAVIGATION_HINT.equals(key)) {
+         }
+     }
+ 
+@@ -200,7 +204,17 @@ public class NavigationBarInflaterView extends FrameLayout
+         updateLayoutInversion();
+     }
+ 
++    public void setNavigationBarLayout(String layoutValue) {
++        if (!Objects.equals(mCurrentLayout, layoutValue)) {
++            mUsingCustomLayout = layoutValue != null;
++            clearViews();
++            inflateLayout(layoutValue);
++        }
++    }
++
+     public void onLikelyDefaultLayoutChange() {
++        // Don't override custom layouts
++        if (mUsingCustomLayout) return;
+ 
+         // Reevaluate new layout
+         final String newValue = getDefaultLayout();
 -- 
-2.17.1
+2.25.1
 
