@@ -18,8 +18,8 @@ index e26139f32..9bbe7b73f 100755
    echo "ro.build.thumbprint=$BUILD_THUMBPRINT"
  fi
  
--echo "org.pixelexperience.device=$CUSTOM_BUILD"
-+echo "org.pixelexperience.device=$TARGET_PRODUCT"
+-echo "com.420rom.device=$FOUR20ROM_BUILD"
++echo "com.420rom.device=$TARGET_PRODUCT"
  
  echo "# end build properties"
 -- 

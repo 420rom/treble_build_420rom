@@ -1,6 +1,6 @@
 #!/bin/bash
 echo ""
-echo "Pixel Experience 11 Treble Buildbot"
+echo "420rom Android 11 Treble Buildbot"
 echo "ATTENTION: this script syncs repo on each run"
 echo "Executing in 5 seconds - CTRL-C to exit"
 echo ""
@@ -18,11 +18,11 @@ echo\
 
 START=`date +%s`
 BUILD_DATE="$(date +%Y%m%d)"
-BL=$PWD/treble_build_pe
+BL=$PWD/treble_build_420rom
 
 echo "Preparing local manifest"
 mkdir -p .repo/local_manifests
-cp $BL/manifest.xml .repo/local_manifests/pixel.xml
+cp $BL/manifest.xml .repo/local_manifests/420rom.xml
 echo ""
 
 echo "Syncing repos"
@@ -43,7 +43,7 @@ cd frameworks/base
 git am $BL/patches/0001-Squashed-revert-of-LOS-FOD-implementation.patch
 cd ../..
 cd frameworks/native
-git revert 542069c3aa6d003887b4abba3c0f494e8271085f --no-edit # surfaceflinger: Add support for extension lib
+git revert cc9bccb92145121a707b9e447b89b825767405f1 --no-edit # surfaceflinger: Add support for extension lib
 cd ../..
 echo ""
 
@@ -51,8 +51,8 @@ echo "Applying PHH patches"
 rm -f device/*/sepolicy/common/private/genfs_contexts
 cd device/phh/treble
 git clean -fdx
-cp $BL/pe.mk .
-bash generate.sh pe
+cp $BL/420rom.mk .
+bash generate.sh 420rom
 cd ../../..
 bash ~/treble_experimentations/apply-patches.sh treble_patches
 echo ""
@@ -65,15 +65,12 @@ cd frameworks/base
 git am $BL/patches/0001-UI-Disable-wallpaper-zoom.patch
 git am $BL/patches/0001-Disable-vendor-mismatch-warning.patch
 cd ../..
-cd vendor/aosp
-git am $BL/patches/0001-vendor_lineage-Log-privapp-permissions-whitelist-vio.patch
+cd vendor/420rom
+git am $BL/patches/0001-vendor_420rom-Log-privapp-permissions-whitelist-vio.patch
 cd ../..
 echo ""
 
 echo "Applying GSI-specific patches"
-cd bootable/recovery
-git revert c9a3611b0bab1744b3c4321e728c917fcdc2abc3 --no-edit # recovery: Allow custom bootloader msg offset in block misc
-cd ../..
 cd build/make
 git am $BL/patches/0001-build-fix-device-name.patch
 cd ../..
@@ -86,31 +83,24 @@ git am $BL/patches/0001-rw-system-set-fingerprint-props.patch
 git am $BL/patches/0001-add-offline-charger-sepolicy.patch
 cd ../../..
 cd frameworks/av
-git revert 72fb8d96c85fd45e85516b4023cd5116b5d5a8eb --no-edit # camera: Allow devices to load custom CameraParameter code
+git revert 2f03869e1fd4f0f51b5129f150e431c118d67e2f --no-edit # camera: Allow devices to load custom CameraParameter code
 cd ../..
 cd frameworks/native
-git revert 581c22f979af05e48ad4843cdfa9605186d286da --no-edit # Add suspend_resume trace events to the atrace 'freq' category.
+git revert c83671c60d0144cb228c3a1b7212c71e3e37ce8e --no-edit # Add suspend_resume trace events to the atrace 'freq' category.
 cd ../..
 cd packages/apps/Bluetooth
-git revert bba4192627ca9987c0128f9774d79ffb17ece2f5 --no-edit # Bluetooth: Reset packages/apps/Bluetooth to upstream
+git revert 659f453f2ee6983b3bc115631da4d09af1d3da55 --no-edit # Bluetooth: Reset packages/apps/Bluetooth to upstream
 cd ../../..
 cd system/core
 git am $BL/patches/0001-Revert-init-Add-vendor-specific-initialization-hooks.patch
 git am $BL/patches/0001-Panic-into-recovery-rather-than-bootloader.patch
 git am $BL/patches/0001-Restore-sbin.patch
 git am $BL/patches/0001-fix-offline-charger-v7.patch
-cd ../..
-cd system/hardware/interfaces
-git am $BL/patches/0001-Revert-system_suspend-start-early.patch
 cd ../../..
 cd system/sepolicy
 git am $BL/patches/0001-Revert-sepolicy-Relabel-wifi.-properties-as-wifi_pro.patch
 cd ../..
-cd treble_app
-git am $BL/patches/0001-Remove-securize-preference.patch
-git am $BL/patches/0001-Remove-Customization-page.patch
-cd ..
-cd vendor/aosp
+cd vendor/420rom
 git am $BL/patches/0001-build_soong-Disable-generated_kernel_headers.patch
 git am $BL/patches/0001-build-fix-build-number.patch
 cd ../..
@@ -120,7 +110,7 @@ echo "Applying GSI-specific fixes"
 mkdir -p device/generic/common/nfc
 curl "https://android.googlesource.com/device/generic/common/+/refs/tags/android-11.0.0_r35/nfc/libnfc-nci.conf?format=TEXT"| base64 --decode > device/generic/common/nfc/libnfc-nci.conf
 mkdir -p device/sample/etc
-cp vendor/aosp/prebuilt/common/etc/apns-conf.xml device/sample/etc/apns-full-conf.xml
+cp vendor/420rom/prebuilt/common/etc/apns-conf.xml device/sample/etc/apns-full-conf.xml
 echo ""
 
 echo "CHECK PATCH STATUS NOW!"
@@ -143,20 +133,20 @@ buildSasImage() {
     case $1 in
     "treble_a64_bvN")
         bash lite-adapter.sh 32 $OUT/system.img
-        xz -c s.img -T0 > ~/builds/PixelExperience_Plus_arm32_binder64-ab-vndklite-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
-        xz -c $OUT/system.img -T0 > ~/builds/PixelExperience_Plus_arm32_binder64-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c s.img -T0 > ~/builds/420rom_arm32_binder64-ab-vndklite-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c $OUT/system.img -T0 > ~/builds/420rom_arm32_binder64-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
         ;;
     "treble_arm_bvN")
         bash run.sh 32 $OUT/system.img
-        xz -c s.img -T0 > ~/builds/PixelExperience_Plus_arm-aonly-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
-        xz -c $OUT/system.img -T0 > ~/builds/PixelExperience_Plus_arm-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c s.img -T0 > ~/builds/420rom_arm-aonly-11.0-$BUILD_DATE-OFFICIAL.img.xz
+        xz -c $OUT/system.img -T0 > ~/builds/420rom_arm-ab-11.0-$BUILD_DATE-OFFICIAL.img.xz
         ;;
     "treble_arm64_bvN")
         bash run.sh 64 $OUT/system.img
-        xz -c s.img -T0 > ~/builds/PixelExperience_Plus_arm64-aonly-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c s.img -T0 > ~/builds/420rom_arm64-aonly-11.0-$BUILD_DATE-OFFICIAL.img.xz
         bash lite-adapter.sh 64 $OUT/system.img
-        xz -c s.img -T0 > ~/builds/PixelExperience_Plus_arm64-ab-vndklite-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
-        xz -c $OUT/system.img -T0 > ~/builds/PixelExperience_Plus_arm64-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c s.img -T0 > ~/builds/420rom_arm64-ab-vndklite-11.0-$BUILD_DATE-OFFICIAL.img.xz
+        xz -c $OUT/system.img -T0 > ~/builds/420rom_arm64-ab-11.0-$BUILD_DATE-OFFICIAL.img.xz
         ;;
     esac
     rm -rf s.img
@@ -171,11 +161,8 @@ buildTrebleApp() {
 }
 
 buildTrebleApp
-buildVariant treble_arm_bvN
-buildVariant treble_a64_bvN
-buildVariant treble_arm64_bvN
-ls ~/builds | grep 'PixelExperience'
-
+buildVariant treble_arm64_bgN
+ls ~/builds | grep '420rom'
 END=`date +%s`
 ELAPSEDM=$(($(($END-$START))/60))
 ELAPSEDS=$(($(($END-$START))-$ELAPSEDM*60))

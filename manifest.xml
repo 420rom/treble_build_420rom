@@ -1,7 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-  <project name="phhusson/vendor_hardware_overlay" path="vendor/hardware_overlay" remote="github" revision="pie" />
-  <project name="phhusson/device_phh_treble" path="device/phh/treble" remote="github" revision="android-11.0" />
+
+  <remote name="github"
+          fetch="ssh://git@github.com/" />
+          
+  <remote name="gitlab"
+          fetch="https://gitlab.com/" />
+
+  <remote name="420rom"
+          fetch="ssh://git@github.com/420rom/"
+          revision="420rom-11" />
+		   
+  <remote name="420rom-gitlab"
+          fetch="https://gitlab.com/420rom/"
+          revision="420rom-11" />
+		   
+  <remote name="omnirom"
+          fetch="ssh://git@github.com/omnirom/"
+          revision="android-11" />
+
+  <remote name="statix"
+          revision="11"
+          fetch="ssh://git@github.com/StatiXOS/" />
+
+  <remote name="statix-gitlab"
+          revision="11"
+          fetch="https://gitlab.com/StatiXOS/" />
+
+  <remote name="gitrip"
+          fetch="ssh://git@84.38.177.15/" />
+
+  <remote name="caf"
+          fetch="https://source.codeaurora.org/quic/la/"
+          revision="refs/tags/LA.UM.9.1.r1-06700-SMxxx0.0" />
+	 
+  <remote name="los"
+          fetch="ssh://git@github.com/LineageOS/"
+          revision="refs/heads/lineage-18.1"
+          review="review.lineageos.org" />
+         
+  <remote name="dot"
+          fetch="ssh://git@github.com/DotOS/"
+          review="https://review.droidontime.com/"
+          revision="refs/heads/dot11" />
+  
+  <remote name="dot-gitlab"
+          fetch="https://gitlab.com/dotos-official/"
+          review="https://review.droidontime.com/"
+          revision="refs/heads/dot11" />
+
+  <remote name="dotOS-Devices"
+          fetch="ssh://git@github.com/dotOS-Devices"
+          revision="refs/heads/dot11" />
+  
+  <remote name="dot-git"
+          fetch="https://git.droidontime.com/android"
+          revision="refs/heads/dot11" />
+           
+  <remote  name="aosp"
+           fetch="https://android.googlesource.com/"
+           review="https://android-review.googlesource.com/" />
+  <default revision="refs/tags/android-11.0.0_r37"
+           remote="aosp"
+           sync-j="4"
+           sync-c="true" />
+
+  <project path="vendor/hardware_overlay" name="vendor_hardware_overlay" remote="420rom" revision="420rom-11" />
+  <project path="device/phh/treble" name="device_phh_treble" remote="420rom" revision="420rom-11" />
   <project name="phhusson/vendor_vndk-tests" path="vendor/vndk-tests" remote="github" revision="master" />
   <project name="phhusson/vendor_interfaces" path="vendor/interfaces" remote="github" revision="android-11.0" />
   <project name="phhusson/vendor_magisk" path="vendor/magisk" remote="github" revision="android-10.0" />
