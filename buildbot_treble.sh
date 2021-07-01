@@ -6,6 +6,16 @@ echo "Executing in 5 seconds - CTRL-C to exit"
 echo ""
 sleep 5
 
+# Abort early on error
+set -eE
+trap '(\
+echo;\
+echo \!\!\! An error happened during script execution;\
+echo \!\!\! Please check console output for bad sync,;\
+echo \!\!\! failed patch application, etc.;\
+echo\
+)' ERR
+
 START=`date +%s`
 BUILD_DATE="$(date +%Y%m%d)"
 BL=$PWD/treble_build_pe
@@ -20,9 +30,9 @@ repo sync -c --force-sync --no-clone-bundle --no-tags -j$(nproc --all)
 echo ""
 
 echo "Cloning dependecy repos"
-[ ! -d ./treble_patches ] && git clone https://github.com/ponces/treble_patches -b eleven
+[ ! -d ./treble_patches ] && git clone https://github.com/abun880007/treble_patches -b 420rom-11
 [ ! -d ./sas-creator ] && git clone https://github.com/AndyCGYan/sas-creator
-rm -rf treble_app && git clone https://github.com/phhusson/treble_app
+rm -rf treble_app && git clone https://github.com/420rom/treble_app
 
 echo "Setting up build environment"
 source build/envsetup.sh &> /dev/null
@@ -133,20 +143,20 @@ buildSasImage() {
     case $1 in
     "treble_a64_bvN")
         bash lite-adapter.sh 32 $OUT/system.img
-        xz -c s.img -T0 > ~/builds/PixelExperience_arm32_binder64-ab-vndklite-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
-        xz -c $OUT/system.img -T0 > ~/builds/PixelExperience_arm32_binder64-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c s.img -T0 > ~/builds/PixelExperience_Plus_arm32_binder64-ab-vndklite-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c $OUT/system.img -T0 > ~/builds/PixelExperience_Plus_arm32_binder64-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
         ;;
     "treble_arm_bvN")
         bash run.sh 32 $OUT/system.img
-        xz -c s.img -T0 > ~/builds/PixelExperience_arm-aonly-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
-        xz -c $OUT/system.img -T0 > ~/builds/PixelExperience_arm-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c s.img -T0 > ~/builds/PixelExperience_Plus_arm-aonly-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c $OUT/system.img -T0 > ~/builds/PixelExperience_Plus_arm-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
         ;;
     "treble_arm64_bvN")
         bash run.sh 64 $OUT/system.img
-        xz -c s.img -T0 > ~/builds/PixelExperience_arm64-aonly-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c s.img -T0 > ~/builds/PixelExperience_Plus_arm64-aonly-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
         bash lite-adapter.sh 64 $OUT/system.img
-        xz -c s.img -T0 > ~/builds/PixelExperience_arm64-ab-vndklite-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
-        xz -c $OUT/system.img -T0 > ~/builds/PixelExperience_arm64-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c s.img -T0 > ~/builds/PixelExperience_Plus_arm64-ab-vndklite-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
+        xz -c $OUT/system.img -T0 > ~/builds/PixelExperience_Plus_arm64-ab-11.0-$BUILD_DATE-UNOFFICIAL.img.xz
         ;;
     esac
     rm -rf s.img
